@@ -1,4 +1,15 @@
 <jsp:include page="../header.jsp" />
+<%
+	String status = (String)request.getAttribute("status");
+	if(status!=null &&  status.equals("saved")){
+		%>
+		<script>
+		alert("Saved Successfully");
+		</script>
+		<%
+	}
+
+%>
 <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%; background-color: rgba(36, 105, 92, 0.15);" cz-shortcut-listen="true">
    <div class="aspNetHidden">
       <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
@@ -232,7 +243,7 @@
                                  <label class="col-sm-4 control-label">Branch Name <strong style="color: Red">*</strong></label>
                                  <div class="col-sm-8">
                                     <select name="branchName" id="ContentPlaceHolder1_ddlCSPName" class="form-control select2" style="width: 100%;">
-                                       <option value="001">Main Office - 001</option>
+                                       <option value="Main Office - 001">Main Office - 001</option>
                                     </select>
                                  </div>
                               </div>

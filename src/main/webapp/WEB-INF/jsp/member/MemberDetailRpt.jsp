@@ -103,7 +103,7 @@
                                  <select name="branchName" id="branchName" class="form-control" style="width: 100%;">
                                     <option selected="selected" value="">Select Criteria</option>
                                           <%for(Member member: allMember){ %>
-                                          <option value="<%=member.getId()%>-<%=member.getBranchName()%>"><%=member.getBranchName() %></option>
+                                           <option value="<%=member.getBranchName()%>"><%=member.getMemberName() %> - <%=member.getBranchName() %></option>
                                           <%} 
                                              }%>
                                  </select>
