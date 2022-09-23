@@ -7,5 +7,5 @@ import com.society.application.model.BranchMaster;
 
 @Repository
 public interface BranchMasterRepo extends JpaRepository<BranchMaster, Integer>{
-
+	BranchMaster findByname(String name);
 }

@@ -63,6 +63,25 @@ public class Member {
 	private String iFSC;
 	private String status;
 
+	private String transferDate;
+	private String transferAmount;
+
+	public String getTransferDate() {
+		return transferDate;
+	}
+
+	public void setTransferDate(String transferDate) {
+		this.transferDate = transferDate;
+	}
+
+	public String getTransferAmount() {
+		return transferAmount;
+	}
+
+	public void setTransferAmount(String transferAmount) {
+		this.transferAmount = transferAmount;
+	}
+
 	public String getStatus() {
 		return status;
 	}

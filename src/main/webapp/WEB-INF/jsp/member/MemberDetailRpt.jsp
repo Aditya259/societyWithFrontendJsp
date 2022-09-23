@@ -40,7 +40,7 @@
                    	document.getElementById("slNo").innerHTML = data[i].id;
                     document.getElementById("mumberCode").innerHTML = data[i].id;
                     document.getElementById("memberName").innerHTML = data[i].memberName;
-                    document.getElementById("cspCode").innerHTML = data[i].bankCode;
+                    document.getElementById("cspCode").innerHTML = data[i].branchName;
                     document.getElementById("doj").innerHTML = data[i].dob;
                     document.getElementById("relative").innerHTML = data[i].relativeName;
                     document.getElementById("address").innerHTML = data[i].address;
@@ -103,7 +103,7 @@
                                  <select name="branchName" id="branchName" class="form-control" style="width: 100%;">
                                     <option selected="selected" value="">Select Criteria</option>
                                           <%for(Member member: allMember){ %>
-                                           <option value="<%=member.getBranchName()%>"><%=member.getMemberName() %> - <%=member.getBranchName() %></option>
+                                           <option value="<%=member.getBranchName()%>"><%=member.getBranchName() %></option>
                                           <%} 
                                              }%>
                                  </select>

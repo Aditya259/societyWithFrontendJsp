@@ -47,7 +47,7 @@
                  	var x = Number(data.id)
                  	document.getElementById("id").value = x;
                      document.getElementById("ContentPlaceHolder1_txtMemberName").value = data.memberName;
-                     document.getElementById("ContentPlaceHolder1_RequiredFieldValidator5").value = data.memberCode;
+                     document.getElementById("idMemberCode").value = x;
                      document.getElementById("ContentPlaceHolder1_txtMobile").value = data.phoneno;
                      document.getElementById("ContentPlaceHolder1_txtDOJ").value = data.dob;
                      document.getElementById("ContentPlaceHolder1_txtAadharNo").value = data.aadharNo;
@@ -186,11 +186,11 @@
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Member Code :</label> <input name="id" type="text"
-												value="01/NGP/ 000001" readonly="readonly"
-												id="ContentPlaceHolder1_txtSearchbyCode"
+												value="" readonly="readonly"
+												id="idMemberCode"
 												class="form-control" Placeholder="Enter Member Code"
 												autocomplete="off" /> <span
-												id="ContentPlaceHolder1_RequiredFieldValidator5"
+												id="idMemberCode"
 												style="color: Red; font-size: X-Small; font-weight: bold; display: none;">Enter
 												Member Code</span>
 										</div>

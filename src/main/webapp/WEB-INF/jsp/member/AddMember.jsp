@@ -1,16 +1,20 @@
+<%@ page import="java.util.List"%>
+<%@ page import="com.society.application.model.RelativeRelationMaster"%>
 <jsp:include page="../header.jsp" />
 <%
-	String status = (String)request.getAttribute("status");
-	if(status!=null &&  status.equals("saved")){
-		%>
-		<script>
-		alert("Saved Successfully");
-		</script>
-		<%
-	}
+   String status = (String)request.getAttribute("status");
+   if(status!=null &&  status.equals("saved")){
+   	%>
+<script>
+   alert("Saved Successfully");
+</script>
+<%
+   }
+   
+   %>
 
-%>
-<body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%; background-color: rgba(36, 105, 92, 0.15);" cz-shortcut-listen="true">
+<body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%; 
+   background-color: rgba(36, 105, 92, 0.15);" cz-shortcut-listen="true" onload="callGetAllMasterData()">
    <div class="aspNetHidden">
       <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
       <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
@@ -85,9 +89,8 @@
                               <div id="ContentPlaceHolder1_idverify" class="form-group row">
                                  <label class="col-sm-4 control-label" style="color: green;">Verify With<strong style="color: Red">*</strong></label>
                                  <div class="col-sm-8">
-                                    <select name="verifyWithAadhar" 
-                                       onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ContentPlaceHolder1$ddlverify\&#39;,\&#39;\&#39;)&#39;, 0)" 
-                                       id="ContentPlaceHolder1_ddlverify" class="form-control" style="width: 100%;">
+                                    <select name="verifyWithAadhar"
+                                       id="verifyWithAadhar" class="form-control" style="width: 100%;">
                                        <option selected="selected" value="Without Aadhar">Without Aadhar</option>
                                        <option value="With Aadhar">With Aadhar</option>
                                     </select>
@@ -100,7 +103,7 @@
                                        <div class="input-group-addon">
                                           <i class="fa fa-calendar"></i>
                                        </div>
-                                       <input name="registrationDate" type="text" value="01/08/2022" id="ContentPlaceHolder1_txtDOJ" class="form-control" data-inputmask="&#39;alias&#39;: &#39;dd/mm/yyyy&#39;" data-mask="" />
+                                       <input name="registrationDate" type="text" value="01/08/2022" id="registrationDate" class="form-control" data-inputmask="&#39;alias&#39;: &#39;dd/mm/yyyy&#39;" data-mask="" />
                                     </div>
                                     <span id="ContentPlaceHolder1_RequiredFieldValidator5" style="color:Red;font-size:X-Small;font-weight:bold;display:none;">Enter Registration Date</span>
                                  </div>
@@ -108,7 +111,7 @@
                               <div class="form-group row">
                                  <label class="col-sm-4 control-label">Member Name <strong style="color: Red">*</strong></label>
                                  <div class="col-sm-3">
-                                    <select name="memberNamePrefix" id="ContentPlaceHolder1_ddlPrefix" class="form-control" style="width: 100%;">
+                                    <select name="memberNamePrefix" id="memberNamePrefix" class="form-control" style="width: 100%;">
                                        <option value="Mr.">Mr.</option>
                                        <option value="Ms.">Ms.</option>
                                        <option value="Mrs.">Mrs.</option>
@@ -117,35 +120,20 @@
                                     </select>
                                  </div>
                                  <div class="col-sm-5">
-                                    <input name="memberName" type="text" id="ContentPlaceHolder1_txtMemberName" class="form-control" Placeholder="Enter Member Name" />
+                                    <input name="memberName" type="text" id="memberName" class="form-control" Placeholder="Enter Member Name" />
                                     <span id="ContentPlaceHolder1_RequiredFieldValidator2" style="color:Red;font-size:X-Small;font-weight:bold;display:none;">Enter Applicant Name</span>
                                  </div>
                               </div>
                               <div class="form-group row">
                                  <label for="txtRelativeName" class="col-sm-4 control-label">Relative Name</label>
                                  <div class="col-sm-8">
-                                    <input name="relativeName" type="text" id="ContentPlaceHolder1_txtRelativeName" class="form-control" Placeholder="Enter Relative Name" />
+                                    <input name="relativeName" type="text" id="relativeName" class="form-control" Placeholder="Enter Relative Name" />
                                  </div>
                               </div>
                               <div class="form-group row">
                                  <label for="drpRelativeRelation" class="col-sm-4 control-label">Relative Relation</label>
                                  <div class="col-sm-8">
-                                    <select name="relativeRelation" id="ContentPlaceHolder1_ddlRelativeRelation" class="form-control" style="width: 100%;">
-                                       <option value="--Select--">--Select--</option>
-                                       <option value="Father">Father</option>
-                                       <option value="Mother">Mother</option>
-                                       <option value="Son">Son</option>
-                                       <option value="Daughter">Daughter</option>
-                                       <option value="Spouse(Husband/Wife)">Spouse(Husband/Wife)</option>
-                                       <option value="Husband">Husband</option>
-                                       <option value="Wife">Wife</option>
-                                       <option value="Brother">Brother</option>
-                                       <option value="Sister">Sister</option>
-                                       <option value="Daughter in Law">Daughter in Law</option>
-                                       <option value="Brother in Law">Brother in Law</option>
-                                       <option value="Grand Daughter">Grand Daughter</option>
-                                       <option value="Grand Son">Grand Son</option>
-                                       <option value="Other">Other</option>
+                                    <select name="relativeRelation" id="relativeRelation" class="form-control" style="width: 100%;">
                                     </select>
                                  </div>
                               </div>
@@ -176,14 +164,7 @@
                               <div class="form-group row">
                                  <label class="col-sm-4 control-label">Martial Status</label>
                                  <div class="col-sm-8">
-                                    <select name="maritalStatus" id="ContentPlaceHolder1_ddlMStatus" class="form-control" style="width: 100%;">
-                                       <option value="--Select--">--Select--</option>
-                                       <option value="Married">Married</option>
-                                       <option value="Separated">Separated</option>
-                                       <option value="Divorced">Divorced</option>
-                                       <option value="Widowed">Widowed</option>
-                                       <option value="Unmarried">Unmarried</option>
-                                       <option value="Single">Single</option>
+                                    <select name="maritalStatus" id="maritalStatus" class="form-control" style="width: 100%;">
                                     </select>
                                  </div>
                               </div>
@@ -205,36 +186,7 @@
                               <div class="form-group row">
                                  <label for="drpState" class="col-sm-4 control-label">State <strong style="color: Red">*</strong></label>
                                  <div class="col-sm-8">
-                                    <select name="state" id="ContentPlaceHolder1_ddlState" class="form-control select2" style="width: 100%;">
-                                       <option selected="selected" value="--Select--">--Select--</option>
-                                       <option value="ANDRA PRADESH">ANDRA PRADESH</option>
-                                       <option value="ARUNACHAL PRADESH">ARUNACHAL PRADESH</option>
-                                       <option value="ASSAM">ASSAM</option>
-                                       <option value="BIHAR">BIHAR</option>
-                                       <option value="CHHATTISGARH">CHHATTISGARH</option>
-                                       <option value="DELHI">DELHI</option>
-                                       <option value="GUJARAT">GUJARAT</option>
-                                       <option value="HARYANA">HARYANA</option>
-                                       <option value="HIMACHAL PRADESH">HIMACHAL PRADESH</option>
-                                       <option value="JAMMU AND KASHMIR">JAMMU AND KASHMIR</option>
-                                       <option value="JHARKHAND">JHARKHAND</option>
-                                       <option value="KARNATAKA">KARNATAKA</option>
-                                       <option value="KERALA">KERALA</option>
-                                       <option value="MADYA PRADESH">MADYA PRADESH</option>
-                                       <option value="MAHARASHTRA">MAHARASHTRA</option>
-                                       <option value="MANIPUR">MANIPUR</option>
-                                       <option value="MEGHALAYA">MEGHALAYA</option>
-                                       <option value="MIZORAM">MIZORAM</option>
-                                       <option value="NAGALAND">NAGALAND</option>
-                                       <option value="ODISSA">ODISSA</option>
-                                       <option value="PUNJAB">PUNJAB</option>
-                                       <option value="RAJASTHAN">RAJASTHAN</option>
-                                       <option value="SIKKIM">SIKKIM</option>
-                                       <option value="TAMIL NADU">TAMIL NADU</option>
-                                       <option value="TRIPURA">TRIPURA</option>
-                                       <option value="UTTAR PRADESH">UTTAR PRADESH</option>
-                                       <option value="UTTARAKHAND">UTTARAKHAND</option>
-                                       <option value="WEST BENGAL">WEST BENGAL</option>
+                                    <select name="state" id="state" class="form-control select2" style="width: 100%;">
                                     </select>
                                     <span id="ContentPlaceHolder1_RequiredFieldValidator11" style="color:Red;font-size:X-Small;font-weight:bold;display:none;">Select State</span>
                                  </div>
@@ -242,8 +194,7 @@
                               <div class="form-group row">
                                  <label class="col-sm-4 control-label">Branch Name <strong style="color: Red">*</strong></label>
                                  <div class="col-sm-8">
-                                    <select name="branchName" id="ContentPlaceHolder1_ddlCSPName" class="form-control select2" style="width: 100%;">
-                                       <option value="Main Office - 001">Main Office - 001</option>
+                                    <select name="branchName" id="branchName" class="form-control select2" style="width: 100%;">
                                     </select>
                                  </div>
                               </div>
@@ -354,21 +305,7 @@
          <div class="form-group row">
          <label for="drpNomineeRelation" class="col-sm-4 control-label">Nominee Relation</label>
          <div class="col-sm-8">
-         <select name="nRelation" id="ContentPlaceHolder1_ddlNRelation" class="form-control" style="width: 100%;">
-         <option value="Brother">Brother</option>
-         <option value="Daughter">Daughter</option>
-         <option value="Father">Father</option>
-         <option value="Friend">Friend</option>
-         <option value="Husband">Husband</option>
-         <option value="Mother">Mother</option>
-         <option value="Sister">Sister</option>
-         <option value="Son">Son</option>
-         <option value="Wife">Wife</option>
-         <option value="Daughter in Law">Daughter in Law</option>
-         <option value="Brother in Law">Brother in Law</option>
-         <option value="Grand Daughter">Grand Daughter</option>
-         <option value="Grand Son">Grand Son</option>
-         <option value="Other">Other</option>
+         <select name="nRelation" id="nRelation" class="form-control" style="width: 100%;">
          </select>
          </div>
          </div>
@@ -407,12 +344,7 @@
          <div class="form-group row">
          <label for="drpNomineeKycType" class="col-sm-4 control-label">Nominee KYC Type</label>
          <div class="col-sm-8">
-         <select name="nomineeKycType" id="ContentPlaceHolder1_ddlNomineeKycType" class="form-control" style="width: 100%;">
-         <option selected="selected" value="--Select--">--Select--</option>
-         <option value="Aadhar">Aadhar</option>
-         <option value="Voter">Voter</option>
-         <option value="Ration Card">Ration Card</option>
-         <option value="Driving Licence">Driving Licence</option>
+         <select name="nomineeKycType" id="nomineeKycType" class="form-control" style="width: 100%;">
          </select>
          </div>
          </div>
@@ -441,14 +373,7 @@
          <div class="form-group row">
          <label for="txtShareAllotmentFrom" class="col-sm-4 control-label">Share Alloted From <strong style="color: Red">*</strong></label>
          <div class="col-sm-8">
-         <select name="shareAllotedfrm" id="ContentPlaceHolder1_ddlShareAllotedfrm" class="form-control select2" style="width: 100%;">
-         <option value="01/NGP/ 000001">ANKUSH GAJANANRAO BHELKAR-01/NGP/ 000001</option>
-         <option value="01/NGP/ 000002">SUDHIR KRISHNARAO BOREKAR-01/NGP/ 000002</option>
-         <option value="01/NGP/ 000003">MANGESH KRUSHNARAO BOREKAR-01/NGP/ 000003</option>
-         <option value="01/NGP/ 000004">RAJESH BABULAL BHAGAT-01/NGP/ 000004</option>
-         <option value="01/NGP/ 000005">ROSHAN SHANKARRAOJI RAUT-01/NGP/ 000005</option>
-         <option value="01/NGP/ 000006">REKHA GAJANAN BHELKAR-01/NGP/ 000006</option>
-         <option value="01/NGP/ 000007">MAYURI ANKUSH BHELKAR-01/NGP/ 000007</option>
+         <select name="shareAllotedfrm" id="shareAllotedfrm" class="form-control select2" style="width: 100%;">
          </select>
          <span id="ContentPlaceHolder1_RequiredFieldValidator13" style="color:Red;font-size:X-Small;font-weight:bold;display:none;">Select Alloted From</span>
          </div>
@@ -470,11 +395,7 @@
          <div class="form-group row">
          <label for="drpPaymentBy" class="col-sm-4 control-label">Payment By <strong style="color: Red">*</strong></label>
          <div class="col-sm-8">
-         <select name="paymode" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ContentPlaceHolder1$ddlPaymode\&#39;,\&#39;\&#39;)&#39;, 0)" id="ContentPlaceHolder1_ddlPaymode" class="form-control" style="width: 100%;">
-         <option selected="selected" value="Cash">Cash</option>
-         <option value="Cheque">Cheque</option>
-         <option value="Online">Online</option>
-         <option value="NEFT">NEFT</option>
+         <select name="paymode" id="paymode" class="form-control" style="width: 100%;">
          </select>
          </div>
          </div>

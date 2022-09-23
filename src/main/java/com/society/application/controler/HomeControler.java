@@ -3,6 +3,7 @@ package com.society.application.controler;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.society.application.model.BranchMaster;
@@ -27,6 +27,7 @@ import com.society.application.model.PaymentMaster;
 import com.society.application.model.RelativeRelationMaster;
 import com.society.application.model.ReportData;
 import com.society.application.model.ShareAllocationMaster;
+import com.society.application.model.ShareTransferDto;
 import com.society.application.model.StateMaster;
 import com.society.application.repository.BranchMasterRepo;
 import com.society.application.repository.KYCMasterRepo;
@@ -67,6 +68,17 @@ public class HomeControler {
 	@GetMapping("/")
 	public String home() {
 		return "member/AddMember";
+	}
+	
+	@GetMapping("/getAllMember")
+	@ResponseBody
+	public List<Member> getAllMember() {
+		List<Member> listMember = memberRepo.findAll();
+		for(Member member: listMember) {
+		Optional<BranchMaster> branchMaster = branchMasterRepo.findById(Integer.parseInt(member.getBranchName()));
+		member.setBranchName(branchMaster.get().getName());;
+		}
+		return memberRepo.findAll();
 	}
 
 	@GetMapping("/getAllBranch")
@@ -110,6 +122,9 @@ public class HomeControler {
 	public List<KYCMaster> getAllKYC() {
 		return kycMasterRepo.findAll();
 	}
+	
+	
+	
 
 	@GetMapping("/addMemberKyc")
 	public String addMemberKyc(Model model) {
@@ -128,6 +143,10 @@ public class HomeControler {
 	@GetMapping("/memberDetailRpt")
 	public String memberDetailRpt(Model model) {
 		List<Member> allMember = memberRepo.findAll();
+		for(Member member: allMember) {
+			Optional<BranchMaster> branchMaster = branchMasterRepo.findById(Integer.parseInt(member.getBranchName()));
+			member.setBranchName(branchMaster.get().getName());;
+		}
 		model.addAttribute("allMember", allMember);
 		return "member/MemberDetailRpt";
 	}
@@ -135,6 +154,10 @@ public class HomeControler {
 	@GetMapping("/searchMember")
 	public String searchMember(Model model) {
 		List<Member> allMember = memberRepo.findAll();
+		for(Member member: allMember) {
+			Optional<BranchMaster> branchMaster = branchMasterRepo.findById(Integer.parseInt(member.getBranchName()));
+			member.setBranchName(branchMaster.get().getName());;
+		}
 		model.addAttribute("allMember", allMember);
 		return "member/SearchMember";
 	}
@@ -145,6 +168,31 @@ public class HomeControler {
 		model.addAttribute("allMember", allMember);
 		return "memberShare/shareTransfer";
 	}
+	
+	
+	@GetMapping("/memberShareReport")
+	public String memberShareReport(Model model) {
+		List<Member> allMember = memberRepo.findAll();
+		model.addAttribute("allMember", allMember);
+		return "memberShare/memberShareReport";
+	}
+	
+	@GetMapping("/DNOGenerate")
+	public String DNOGenerate() {
+		return "memberShare/DNOGenerate";
+	}
+	
+	
+	@GetMapping("/unallotedShareReport")
+	public String unallotedShareReport(Model model) {
+		return "memberShare/unallotedShareReport";
+	}
+	
+	@GetMapping("/shareCertificate")
+	public String shareCertificate(Model model) {
+		return "memberShare/shareCertificate";
+	}
+
 
 	@PostMapping("addMember")
 	public String addMember(@ModelAttribute("user") Member member, Model model) {
@@ -162,48 +210,96 @@ public class HomeControler {
 	@ResponseBody
 	public Member getAllMember(@RequestBody GenericGetById id) {
 		Optional<Member> member = memberRepo.findById(Integer.parseInt(id.getId()));
+		Optional<BranchMaster> branchMaster = branchMasterRepo.findById(Integer.parseInt(member.get().getBranchName()));
+		member.get().setBranchName(branchMaster.get().getName());;
+		
 		return member.get();
+	}
+	
+	
+	@PostMapping("getShareCertificate")
+	@ResponseBody
+	public List<Member> getShareCertificate(@RequestBody GenericGetById id) {
+		List<Member> listMember = new ArrayList<Member>();
+		Optional<Member> member = memberRepo.findById(Integer.parseInt(id.getId()));
+		Optional<BranchMaster> branchMaster = branchMasterRepo.findById(Integer.parseInt(member.get().getBranchName()));
+		member.get().setBranchName(branchMaster.get().getName());;
+		listMember.add(member.get());
+		return listMember;
 	}
 
 	@PostMapping("getShareMemberData")
 	@ResponseBody
 	public List<Member> getShareMemberData(@RequestBody ReportData data) {
-		System.err.println(data.getBranchName());
-		System.err.println(data.getMemberCode());
 		List<Member> allMember = memberRepo.findAll();
+		if(data.getBranchName()!=null && !data.getBranchName().isEmpty()) {
+		Optional<Member> member = memberRepo.findById(Integer.parseInt(data.getBranchName()));
 		return allMember.stream()
-				.filter(p -> p.getBranchName().equalsIgnoreCase(data.getBranchName())
-						|| p.getShareAllotedfrm().equalsIgnoreCase(data.getMemberCode()))
-
-				.collect(Collectors.toList());
+				.filter(p -> p.getId()== member.get().getId()).collect(Collectors.toList());
+		}
+		return new ArrayList<>();
 	}
 
 	@PostMapping("getMemberReport")
 	@ResponseBody
 	public List<Member> getMemberReport(@RequestBody ReportData data) {
-		System.err.println(data.getBranchName());
-		// String[] slitedData = data.getBranchName().split("-");
-
+		System.err.println(data);
 		List<Member> allMember = memberRepo.findAll();
-		return allMember.stream()
-				.filter(p -> p.getBranchName().equalsIgnoreCase(data.getBranchName())
+		BranchMaster branchMaster = branchMasterRepo.findByname(data.getBranchName());
+		allMember = allMember.stream()
+				.filter(p -> p.getBranchName().equalsIgnoreCase(String.valueOf(branchMaster.getId()))
 						&& dateFormat(p.getRegistrationDate()).after(dateFormatForFrontEnd(data.getfDate()))
 						&& dateFormat(p.getRegistrationDate()).before(dateFormatForFrontEnd(data.gettDate())))
 				.collect(Collectors.toList());
+		for(Member member: allMember) {
+			Optional<BranchMaster> branchMaster2 = branchMasterRepo.findById(Integer.parseInt(member.getBranchName()));
+			member.setBranchName(branchMaster2.get().getName());;
+		}
+		System.err.println(allMember);
+		return allMember;
+	}
+	
+	@PostMapping("getMemberShareReport")
+	@ResponseBody
+	public List<Member> getMemberShareReport(@RequestBody ReportData data) {
+		List<Member> allMember = memberRepo.findAll();
+
+		if(!data.getBranchName().equals("All")) {
+		BranchMaster branchMaster = branchMasterRepo.findByname(data.getBranchName());
+		allMember = allMember.stream()
+				.filter(p -> p.getBranchName().equalsIgnoreCase(String.valueOf(branchMaster.getId()))
+						&& dateFormat(p.getRegistrationDate()).after(dateFormatForFrontEnd(data.getfDate()))
+						&& dateFormat(p.getRegistrationDate()).before(dateFormatForFrontEnd(data.gettDate())))
+				.collect(Collectors.toList());
+		for(Member member: allMember) {
+			Optional<BranchMaster> branchMaster2 = branchMasterRepo.findById(Integer.parseInt(member.getBranchName()));
+			member.setBranchName(branchMaster2.get().getName());;
+		}
+		System.err.println(allMember);
+		return allMember;
+		}
+		return allMember;
 	}
 
 	@PostMapping("getSerachMember")
 	@ResponseBody
 	public List<Member> getSerachMember(@RequestBody ReportData data) {
 		List<Member> allMember = memberRepo.findAll();
-		return allMember.stream()
-				.filter(p -> p.getBranchName().equalsIgnoreCase(data.getBranchName())
+		BranchMaster branchMaster = branchMasterRepo.findByname(data.getBranchName());
+		allMember = allMember.stream()
+				.filter(p -> p.getBranchName().equalsIgnoreCase(String.valueOf(branchMaster.getId()))
 						|| dateFormat(p.getRegistrationDate()).after(dateFormatForFrontEnd(data.getfDate()))
 						|| dateFormat(p.getRegistrationDate()).before(dateFormatForFrontEnd(data.gettDate()))
 						|| p.getMemberName().equalsIgnoreCase(data.getMemberName())
 						|| p.getPhoneno().equals(data.getMobile()) || p.getAadharNo().equals(data.getAadharno())
 						|| p.getPan().equals(data.getPan()))
 				.collect(Collectors.toList());
+		
+		for(Member member: allMember) {
+			Optional<BranchMaster> branchMaster2 = branchMasterRepo.findById(Integer.parseInt(member.getBranchName()));
+			member.setBranchName(branchMaster2.get().getName());;
+		}
+		return allMember;
 
 	}
 
@@ -223,12 +319,18 @@ public class HomeControler {
 	}
 
 	@PostMapping("updateShareTransfer")
-	public String updateShareTransfer(@ModelAttribute("user") Member member, Model model) {
-		Optional<Member> memberObj = memberRepo.findById(member.getId());
-
+	public String updateShareTransfer(@ModelAttribute("user") ShareTransferDto member, Model model) {
+		Optional<Member> memberObj = memberRepo.findById(Integer.parseInt(member.getId()));
+		memberObj.get().setBankName(member.getBranchName());
+		memberObj.get().setTransferDate(member.getTransferDate());
+		memberObj.get().setShareAllotedfrm(member.getShareAllotedfrm2());
+		memberObj.get().setTransferAmount(member.getTransferAmount());
+		memberObj.get().setPaymode(member.getPaymode());
+		memberObj.get().setRemarks(member.getRemarks());
+		
 		memberRepo.save(memberObj.get());
 		model.addAttribute("status", "success");
-		return "member/AddMemberKYC";
+		return "memberShare/shareTransfer";
 	}
 
 	private Date dateFormat(String dateToFormat) {

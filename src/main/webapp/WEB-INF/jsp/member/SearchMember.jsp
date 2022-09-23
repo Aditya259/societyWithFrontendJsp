@@ -50,11 +50,11 @@
                     	for (var i = 0; i < data.length; i++) {
                     	document.getElementById("slNo").innerHTML = data[i].id;
                      document.getElementById("mumberCode").innerHTML = data[i].id;
-                     document.getElementById("memberName").innerHTML = data[i].memberName;
+                     document.getElementById("memberNameD").innerHTML = data[i].memberName;
                      document.getElementById("gender").innerHTML = data[i].gender;
                      document.getElementById("doj").innerHTML = data[i].dob;
                      document.getElementById("aadharNo").innerHTML = data[i].aadharNo;
-                     document.getElementById("pan").innerHTML = data[i].pan;
+                     document.getElementById("panNo").innerHTML = data[i].pan;
                      document.getElementById("phoneNo").innerHTML = data[i].phoneno;
                      document.getElementById("nominee").innerHTML = data[i].nomineeName;
                      document.getElementById("status").innerHTML = data[i].status;
@@ -209,11 +209,11 @@
                         <tr>
                         <td id="slNo"></td>
                         <td id="mumberCode"></td>
-                        <td id="memberName"></td>
+                        <td id="memberNameD"></td>
                         <td id="gender""></td>
                         <td id="doj"></td>
                         <td id="aadharNo"></td>
-                        <td id="pan"></td>
+                        <td id="panNo"></td>
                         <td id="phoneNo"></td>
                         <td id="nominee"></td>
                         <td id="status"></td>

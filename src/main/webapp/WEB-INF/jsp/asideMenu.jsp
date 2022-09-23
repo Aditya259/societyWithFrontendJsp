@@ -43,13 +43,13 @@
                                         
                                                 <li><a href="shareIssue?ismodify=false"><i class="fa fa-circle-o"></i>Share Transfer</a></li>
                                             
-                                                <li><a href="UnallotedShareReport.html"><i class="fa fa-circle-o"></i>Un-allotted Shares</a></li>
+                                                <li><a href="unallotedShareReport"><i class="fa fa-circle-o"></i>Un-allotted Shares</a></li>
                                             
-                                                <li><a href="ShareCertificate.html"><i class="fa fa-circle-o"></i>Share Certificate</a></li>
+                                                <li><a href="shareCertificate"><i class="fa fa-circle-o"></i>Share Certificate</a></li>
                                             
-                                                <li><a href="MemberShareReport.html"><i class="fa fa-circle-o"></i>Share Report</a></li>
+                                                <li><a href="memberShareReport"><i class="fa fa-circle-o"></i>Share Report</a></li>
                                             
-                                                <li><a href="DNOGenerate.html"><i class="fa fa-circle-o"></i>DNO Re-Generate</a></li>
+                                                <li><a href="DNOGenerate"><i class="fa fa-circle-o"></i>DNO Re-Generate</a></li>
                                             
                                     </ul>
                                 </li>

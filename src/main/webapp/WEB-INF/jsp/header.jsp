@@ -105,4 +105,5 @@
             }
         }
     </script>
+    <script src="dist/js/customJs.js"></script>
 </head>
