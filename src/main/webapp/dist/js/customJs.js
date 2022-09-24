@@ -109,6 +109,28 @@
     	    	alert("Device control failed");
     	    }
         });
+        
+        //Position
+    	const selectPosition = document.getElementById("selectPosition");
+    	$.ajax({
+            type:"get",
+            contentType: "application/json",
+            url: 'getAllPosition',
+            asynch: false,
+            success: function(data) {
+            	data.forEach(value => {
+            	//alert(value.name)
+     			const option = document.createElement('option')
+     			option.setAttribute('value', value.id);
+     			option.innerHTML = value.name
+     			selectPosition.appendChild(option)
+   			})
+                
+            } ,
+    	    error: function(){
+    	    	alert("Device control failed");
+    	    }
+        });
     	
     	//nomineeKycType
     	const nomineeKycType = document.getElementById("nomineeKycType");
@@ -190,6 +212,50 @@
      			option.setAttribute('value', value.id);
      			option.innerHTML = value.name
      			paymode.appendChild(option)
+   			})
+                
+            } ,
+    	    error: function(){
+    	    	alert("Device control failed");
+    	    }
+        });
+        
+        //alladvisor getAllAdvisor
+        const allAdvisor = document.getElementById("collector");
+    	$.ajax({
+            type:"get",
+            contentType: "application/json",
+            url: 'getAllAdvisor',
+            asynch: false,
+            success: function(data) {
+            	data.forEach(value => {
+            	//alert(value.name)
+     			const option = document.createElement('option')
+     			option.setAttribute('value', value.id);
+     			option.innerHTML = value.memberName
+     			allAdvisor.appendChild(option)
+   			})
+                
+            } ,
+    	    error: function(){
+    	    	alert("Device control failed");
+    	    }
+        });
+        
+        //memberDataBranch
+        const memberDataBranch2 = document.getElementById("memberDataBranch2");
+    	$.ajax({
+            type:"get",
+            contentType: "application/json",
+            url: 'getAllMember',
+            asynch: false,
+            success: function(data) {
+            	data.forEach(value => {
+            	//alert(value.name)
+     			const option = document.createElement('option')
+     			option.setAttribute('value', value.id);
+     			option.innerHTML = value.branchName
+     			memberDataBranch2.appendChild(option)
    			})
                 
             } ,
@@ -293,6 +359,48 @@
         });
     }
    
+   //tableBodyAdvisor
+   function gettableAdvisor(){
+	var advisorSearchbyCode = document.getElementById("advisorSearchbyCode");
+		var input = {
+                     "id": advisorSearchbyCode.value
+             }
+        $.ajax({
+                 type:"post",
+                 contentType: "application/json",
+                 data: JSON.stringify(input),
+                 url: 'getAdvisor',
+                 asynch: false,
+                 success: function(data) {
+			   var array = [];
+               array.push(data);
+               for (let i = 0; i < 1; i++) {
+				//alert(array[i].memberName)
+				 const tableAdvisor = array.map(function(value){
+                        return (
+                            `<tr>
+                           		<td>${value.id}</td>
+                           		<td>${value.id}</td>
+                                <td>${value.memberName}</td>
+                                <td>${value.position}</td>
+                            </tr>`
+                        );
+                    }).join('');
+               		 const tableBodyAdvisor = document.querySelector("#tableBodyAdvisor");
+                    tableBodyAdvisor.innerHTML = tableAdvisor;
+                   }
+                     
+                 } ,
+         	    error: function(){
+         	    	alert("Device control failed");
+         	    }
+             });
+	
+	}
+   
+   
+   
+   
    function getShareCertificate(){
 		const memberData = document.getElementById("memberData");
 		//alert(memberData.value)
@@ -369,3 +477,94 @@
            	    }
                });
 	}
+
+	function getMemberById(ids){
+		//alert(ids)
+		var input = {
+                     "id": ids
+             }
+         	$.ajax({
+                 type:"post",
+                 contentType: "application/json",
+                 data: JSON.stringify(input),
+                 url: 'getMember',
+                 asynch: false,
+                 success: function(data) {
+                 	var x = Number(data.id)
+                 	  document.getElementById("memberId").value = x;
+                     document.getElementById("memberName").value = data.memberName;
+                     document.getElementById("dob").value = data.dob;
+                     document.getElementById("relativeName").value = data.relativeName;
+                     document.getElementById("relativeRelation").value = data.relativeRelation
+                     document.getElementById("mobileNo").value = data.phoneno;
+                     document.getElementById("address").value = data.address;
+                     document.getElementById("district").value = data.district;
+                     document.getElementById("state").value = data.state;
+                     document.getElementById("pinCode").value = data.pinCode;
+                     document.getElementById("occupation").value = data.occupation;
+                     document.getElementById("education").value = data.education;
+                     
+                 } ,
+         	    error: function(){
+         	    	alert("Device control failed");
+         	    }
+             });
+	}
+	
+	function getByAdvisorCode(){
+		var advisorSearchbyCode = document.getElementById("advisorSearchbyCode");
+		var input = {
+                     "id": advisorSearchbyCode.value
+             }
+        $.ajax({
+                 type:"post",
+                 contentType: "application/json",
+                 data: JSON.stringify(input),
+                 url: 'getAdvisor',
+                 asynch: false,
+                 success: function(data) {
+                 	var x = Number(data.id)
+                 	 // document.getElementById("advisorSearchbyCode").value = x;
+                    // document.getElementById("advisorName").value = data.memberName;
+                     document.getElementById("position").value = data.position;
+                     
+                     
+                 } ,
+         	    error: function(){
+         	    	alert("Device control failed");
+         	    }
+             });
+
+	}
+	
+	function getByAdvisorColleactorCode(){
+		var advisorSearchbyCode = document.getElementById("collector");
+		var input = {
+                     "id": advisorSearchbyCode.value
+             }
+        $.ajax({
+                 type:"post",
+                 contentType: "application/json",
+                 data: JSON.stringify(input),
+                 url: 'getAdvisor',
+                 asynch: false,
+                 success: function(data) {
+                 	var x = Number(data.id)
+                 	 // document.getElementById("advisorSearchbyCode").value = x;
+                    // document.getElementById("advisorName").value = data.memberName;
+                     document.getElementById("position").value = data.selectPosition;
+                     document.getElementById("branchName").value = data.branchName;
+                     
+                     
+                 } ,
+         	    error: function(){
+         	    	alert("Device control failed");
+         	    }
+             });
+	}
+	
+	
+	
+	
+	
+	

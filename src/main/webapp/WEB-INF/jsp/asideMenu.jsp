@@ -58,17 +58,17 @@
                                     <a href='#'><img src="dist/img/icon/ico-5.png" style="margin-right: 5px;"/><span>Collector/Advisor</span><span class="pull-right-container">  <i class="fa fa-angle-left pull-right"></i></span></a>
                                     <ul class="treeview-menu">
                                         
-                                                <li><a href="AddAdvisor.html"><i class="fa fa-circle-o"></i>Add Collector/Advisor</a></li>
+                                                <li><a href="addAdvisor"><i class="fa fa-circle-o"></i>Add Collector/Advisor</a></li>
                                             
-                                                <li><a href="AdvisorTree.html"><i class="fa fa-circle-o"></i>Collector/Advisor Tree</a></li>
+                                                <li><a href="advisorTree"><i class="fa fa-circle-o"></i>Collector/Advisor Tree</a></li>
                                             
-                                                <li><a href="AdvisorDownline.html"><i class="fa fa-circle-o"></i>Collector/Advisor Downline</a></li>
+                                                <li><a href="advisorDownLine"><i class="fa fa-circle-o"></i>Collector/Advisor Downline</a></li>
                                             
-                                                <li><a href="CollectorPromotion.html"><i class="fa fa-circle-o"></i>Collector/Advisor Promotion</a></li>
+                                                <li><a href="collectorPromotion"><i class="fa fa-circle-o"></i>Collector/Advisor Promotion</a></li>
                                             
-                                                <li><a href="IDCardPrinting.html"><i class="fa fa-circle-o"></i>Collector/Advisor I-Card</a></li>
+                                                <li><a href="idCardPrinting"><i class="fa fa-circle-o"></i>Collector/Advisor I-Card</a></li>
                                             
-                                                <li><a href="AdvisorSearch.html"><i class="fa fa-circle-o"></i>Collector/Advisor Search</a></li>
+                                                <li><a href="advisorSearch"><i class="fa fa-circle-o"></i>Collector/Advisor Search</a></li>
                                             
                                     </ul>
                                 </li>

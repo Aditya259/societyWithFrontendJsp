@@ -11,6 +11,7 @@ import com.society.application.model.BranchMaster;
 import com.society.application.model.KYCMaster;
 import com.society.application.model.MartialStatus;
 import com.society.application.model.PaymentMaster;
+import com.society.application.model.Position;
 import com.society.application.model.RelativeRelationMaster;
 import com.society.application.model.ShareAllocationMaster;
 import com.society.application.model.StateMaster;
@@ -18,6 +19,7 @@ import com.society.application.repository.BranchMasterRepo;
 import com.society.application.repository.KYCMasterRepo;
 import com.society.application.repository.MartialStatusRepo;
 import com.society.application.repository.PaymentMasterRepo;
+import com.society.application.repository.PositionRepo;
 import com.society.application.repository.RelativeRelationMasterRepo;
 import com.society.application.repository.ShareAllocationMasterRepo;
 import com.society.application.repository.StateMasterRepo;
@@ -45,6 +47,34 @@ public class MasterInsertController {
 	
 	@Autowired
 	ShareAllocationMasterRepo shareAllocationMasterRepo;
+	
+	@Autowired
+	PositionRepo positionRepo;
+	
+	@GetMapping("insertPositionMaster")
+	public String insertPositionMaster() {
+		List<Position> listPositionMaster = new ArrayList<>();
+		listPositionMaster.add(createListOfPositionMaster(1, "Advisor"));
+		listPositionMaster.add(createListOfPositionMaster(2, "Sales Officer"));
+		listPositionMaster.add(createListOfPositionMaster(3, "Development Officers"));
+		listPositionMaster.add(createListOfPositionMaster(4, "Sr Development Officer"));
+		listPositionMaster.add(createListOfPositionMaster(5, "BSM"));
+		listPositionMaster.add(createListOfPositionMaster(6, "ASM"));
+		listPositionMaster.add(createListOfPositionMaster(7, "RSM"));
+		listPositionMaster.add(createListOfPositionMaster(8, "State Head"));
+		listPositionMaster.add(createListOfPositionMaster(9, "Zonal Head"));
+		listPositionMaster.add(createListOfPositionMaster(10, "Director Sales"));
+		positionRepo.saveAll(listPositionMaster);
+		return "Position Master List Inserted Successfully";
+	}
+	
+	private Position createListOfPositionMaster(int id, String relation) {
+		Position positionMaster = new Position();
+		positionMaster.setId(id);
+		positionMaster.setName(relation);
+		return positionMaster;
+	}
+
 	
 	@GetMapping("insertShareAllocationMaster")
 	public String insertShareAllocationMaster() {
