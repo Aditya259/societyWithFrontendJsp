@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.society.application.model.AdvisorCollectorDetails;
 import com.society.application.model.BranchMaster;
 import com.society.application.model.CollectorPromotionDto;
+import com.society.application.model.DepartmentMaster;
+import com.society.application.model.DesignationMaster;
+import com.society.application.model.Employee;
 import com.society.application.model.GenericGetById;
 import com.society.application.model.KYCMaster;
 import com.society.application.model.MartialStatus;
@@ -34,7 +37,11 @@ import com.society.application.model.ShareAllocationMaster;
 import com.society.application.model.ShareTransferDto;
 import com.society.application.model.StateMaster;
 import com.society.application.repository.AdvisorCollectorDetailsRepo;
+import com.society.application.repository.AdvisorRepo;
 import com.society.application.repository.BranchMasterRepo;
+import com.society.application.repository.DepartmentMasterRepo;
+import com.society.application.repository.DesignationMasterRepo;
+import com.society.application.repository.EmployeeRepo;
 import com.society.application.repository.KYCMasterRepo;
 import com.society.application.repository.MartialStatusRepo;
 import com.society.application.repository.MemberRepo;
@@ -77,6 +84,18 @@ public class HomeControler {
 	@Autowired
 	PositionRepo positionRepo;
 
+	@Autowired
+	AdvisorRepo advisorRepo;
+
+	@Autowired
+	EmployeeRepo employeeRepo;
+
+	@Autowired
+	DesignationMasterRepo designationMasterRepo;
+
+	@Autowired
+	DepartmentMasterRepo departmentMasterRepo;
+
 	@GetMapping("/")
 	public String home() {
 		return "member/AddMember";
@@ -96,12 +115,12 @@ public class HomeControler {
 	public String collectorPromotion() {
 		return "advisor/collectorPromotion";
 	}
-	
+
 	@GetMapping("/idCardPrinting")
 	public String idCardPrinting() {
 		return "advisor/idCardPrinting";
 	}
-	
+
 	@GetMapping("/advisorSearch")
 	public String advisorSearch() {
 		return "advisor/advisorSearch";
@@ -128,9 +147,11 @@ public class HomeControler {
 	public AdvisorCollectorDetails getAdvisor(@RequestBody GenericGetById id) {
 		Optional<AdvisorCollectorDetails> listAdvisorCollectorDetails = advisorCollectorDetailsRepo
 				.findById(Integer.parseInt(id.getId()));
-		Optional<Position> position = positionRepo.findById(Integer.parseInt(listAdvisorCollectorDetails.get().getSelectPosition()));
+		Optional<Position> position = positionRepo
+				.findById(Integer.parseInt(listAdvisorCollectorDetails.get().getSelectPosition()));
 		listAdvisorCollectorDetails.get().setSelectPosition(position.get().getName());
-		Optional<BranchMaster> branchMaster = branchMasterRepo.findById(Integer.parseInt(listAdvisorCollectorDetails.get().getBranchName()));
+		Optional<BranchMaster> branchMaster = branchMasterRepo
+				.findById(Integer.parseInt(listAdvisorCollectorDetails.get().getBranchName()));
 		listAdvisorCollectorDetails.get().setBranchName(branchMaster.get().getName());
 		return listAdvisorCollectorDetails.get();
 	}
@@ -182,7 +203,7 @@ public class HomeControler {
 	public List<KYCMaster> getAllKYC() {
 		return kycMasterRepo.findAll();
 	}
-	
+
 	@GetMapping("/getAllAdvisor")
 	@ResponseBody
 	public List<AdvisorCollectorDetails> getAllAdvisor() {
@@ -301,14 +322,14 @@ public class HomeControler {
 		}
 		return new ArrayList<>();
 	}
-	
-	
+
 	@PostMapping("searchAdvisor")
 	public String searchAdvisor(@ModelAttribute("user") ReportDataAdvisor data) {
 		System.err.println(data);
 		List<AdvisorCollectorDetails> allAdvisorCollectorDetails = advisorCollectorDetailsRepo.findAll();
-		allAdvisorCollectorDetails.stream().filter(p-> p.getBranchName().equals(data.getBranchName())).collect(Collectors.toList());
-		System.err.println("allAdvisorCollectorDetails ="+allAdvisorCollectorDetails);
+		allAdvisorCollectorDetails.stream().filter(p -> p.getBranchName().equals(data.getBranchName()))
+				.collect(Collectors.toList());
+		System.err.println("allAdvisorCollectorDetails =" + allAdvisorCollectorDetails);
 		return "advisor/advisorSearch";
 	}
 
@@ -393,20 +414,19 @@ public class HomeControler {
 		model.addAttribute("status", "success");
 		return "member/AddMemberKYC";
 	}
-	
-	
-	
+
 	@PostMapping("updateColectorPromotion")
-	public String updateColectorPromotion(@ModelAttribute("user") CollectorPromotionDto collectorPromotionDto, Model model) {
-		System.err.println("collectorPromotionDto = "+collectorPromotionDto);
-		Optional<AdvisorCollectorDetails> advisorCollector =advisorCollectorDetailsRepo.findById(Integer.parseInt(collectorPromotionDto.getCollector()));
+	public String updateColectorPromotion(@ModelAttribute("user") CollectorPromotionDto collectorPromotionDto,
+			Model model) {
+		System.err.println("collectorPromotionDto = " + collectorPromotionDto);
+		Optional<AdvisorCollectorDetails> advisorCollector = advisorCollectorDetailsRepo
+				.findById(Integer.parseInt(collectorPromotionDto.getCollector()));
 		advisorCollector.get().setBranchName(collectorPromotionDto.getBranchName());
 		advisorCollector.get().setSelectPosition(collectorPromotionDto.getPosition());
 		advisorCollector.get().setNewSenior(collectorPromotionDto.getNewSenior());
 		advisorCollectorDetailsRepo.save(advisorCollector.get());
 		return "advisor/collectorPromotion";
 	}
-	
 
 	@PostMapping("updateShareTransfer")
 	public String updateShareTransfer(@ModelAttribute("user") ShareTransferDto member, Model model) {
@@ -427,6 +447,49 @@ public class HomeControler {
 	public String saveAdvisor(@ModelAttribute("user") AdvisorCollectorDetails advisorCollectorDetails, Model model) {
 		advisorCollectorDetailsRepo.save(advisorCollectorDetails);
 		return "advisor/addAdvisor";
+	}
+
+	@GetMapping("/addEmployee")
+	public String addEmployee() {
+		return "employee/AddEmployee";
+	}
+
+	@PostMapping("/addEmployee")
+	public String addEmployee(@ModelAttribute("emp") Employee employee, Model model) {
+		employeeRepo.save(employee);
+		return "employee/AddEmployee";
+	}
+
+	@GetMapping("/DesignationMaster")
+	public String DesignationMaster() {
+		return "employee/DesignationMaster";
+	}
+
+	@PostMapping("DesignationMaster")
+	public String DesignationMaster(@ModelAttribute("designation") DesignationMaster designationMaster, Model model) {
+		designationMasterRepo.save(designationMaster);
+		return "employee/DesignationMaster";
+	}
+
+	@GetMapping("/DepartmentMaster")
+	public String DepartmentMaster() {
+		return "employee/DepartmentMaster";
+	}
+
+	@PostMapping("DepartmentMaster")
+	public String DepartmentMaster(@ModelAttribute("designation") DepartmentMaster departmentMaster, Model model) {
+		departmentMasterRepo.save(departmentMaster);
+		return "employee/DepartmentMaster";
+	}
+
+	@GetMapping("/EmployeeIDCardPrinting")
+	public String EmployeeIDCardPrinting() {
+		return "employee/EmployeeIDCardPrinting";
+	}
+
+	@GetMapping("/SearchEmployee")
+	public String SearchEmployee() {
+		return "employee/SearchEmployee";
 	}
 
 	private Date dateFormat(String dateToFormat) {
